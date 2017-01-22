@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+            <title>d3jsの棒グラフ</title>
+            <style>
+            #myGraph{width: 350px}
+            #myGraph rect{
+                fill : rgb(160, 0, 0);
+            }
+            axis text{
+                font-family: sans-self;
+                font-size: 11px;
+            }
+            .axis path,
+            .axis line{
+                fill: none;
+                stroke: black;
+            }
+            #treemap{
+                width: 800px;
+                height: 800px;
+                border: 1px solid black;
+            }
+            .block{stroke: black; fill: #ddd;}
+            .name{text-anchor: middle;}
+            </style>
+            <script src="js/d3-3.1.0/d3.min.js" charset="UTF-8"></script>
+    </head>
+    <body>
+        <h1>縦棒グラフ</h1>
+        <svg id="myGraph"></svg>
+        <script src="js/sample.js"></script>
+        
+        <h1>ツリーマップ</h1>
+        <svg id="treemap"></svg>
+        <script src="js/treemap.js"></script>
+    </body>
+</html>

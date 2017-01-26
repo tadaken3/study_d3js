@@ -1,4 +1,4 @@
-var color10 = d3.scale.category10()
+var color = d3.scale.category10()
 
 d3.csv("./data_.csv", function(error, data){
     var tmp = [ ];
@@ -35,7 +35,20 @@ function drawTreemap(dataset){
             })
             .attr("height", function(d, i){
                 return d.dy;
-            });
+            })
+            
+            .style("fill", function(d, i){
+                if(d.category == "ドラえもん"){
+                    return color(1); 
+                }else if (d.category == "キテレツ"){
+                    return color(2);
+                }else if(d.category == "スヌーピー"){
+                    return color(3);
+                }else{
+                    return color(i);
+                }
+            })
+            
         tmap.enter()
             .append("text")
             .attr("class", "name")
@@ -47,6 +60,6 @@ function drawTreemap(dataset){
                 return d.name;
             })
             .style("font-size", function(d, i){
-                return (d.dx + d.dy) / 20 + "px";
+                return (d.dx + d.dy) / 30 + "px";
             })
 }

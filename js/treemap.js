@@ -1,65 +1,34 @@
-var color = d3.scale.category10()
+var width = 800;
+var height = 800;
 
-d3.csv("./data_.csv", function(error, data){
-    var tmp = [ ];
-    for(var i=0; i<data.length; i++){
-        tmp.push({name : data[i]["app_name"],
-        value : data[i]["grossing"],
-        category : data[i]["category"]});
-    }
-     var dataset = {
-         children: tmp
-    };
-    drawTreemap(dataset);
+var color10 = d3.scale.category10();
+
+var treemap = d3.layout.treemap()
+    .size([width, height])
+
+d3.json("data_.json", function(data) {
+var tmap = d3.select("#treemap")
+    .selectAll("rect")
+    .data(treemap.nodes(data))
+    console.log(treemap.nodes(data))
+
+tmap.enter()
+    .append("rect")
+    .attr("class","block")
+    .attr("x", function(d){return d.x;})
+    .attr("y", function(d){return d.y;})
+    .attr("width", function(d){return d.dx;})
+    .attr("height", function(d){return d.dy;})
+    .attr("fill",function(d){ 
+        return d.children ? null : color10(d.parent.name); 
+    }) // 一番下の子だけ親に合わせて色を変える。
+    .attr("stroke","white")
+tmap.enter()
+    .append("text")
+    .attr("x", function(d){ return d.x + (d.dx/2); }) // 各rectの真ん中に配置。
+    .attr("y", function(d){ return d.y + (d.dy/2); }) // 各rectの真ん中に配置。
+    .attr("text-anchor","middle")
+    .text(function(d){ return d.children ? "" : d.name; }) // 一番下の子の名前だけ表示。
+    .attr("stroke", "black");
+    
 })
-
-function drawTreemap(dataset){
-    var treemap = d3.layout.treemap()
-        .size([800, 800])
-        
-    var tmap = d3.select("#treemap")
-            .selectAll("rect")
-            .data(treemap.nodes(dataset))
-
-        tmap.enter()
-            .append("rect")
-            .attr("class", "block")
-            .attr("x", function(d, i){
-                return d.x;
-            })
-            .attr("y", function(d, i){
-                return d.y;
-            })
-            .attr("width", function(d, i){
-                return d.dx;
-            })
-            .attr("height", function(d, i){
-                return d.dy;
-            })
-            
-            .style("fill", function(d, i){
-                if(d.category == "ドラえもん"){
-                    return color(1); 
-                }else if (d.category == "キテレツ"){
-                    return color(2);
-                }else if(d.category == "スヌーピー"){
-                    return color(3);
-                }else{
-                    return color(i);
-                }
-            })
-            
-        tmap.enter()
-            .append("text")
-            .attr("class", "name")
-            .attr("transform", function(d,i){
-                return "translate(" + (d.x + d.dx/2) + "," + (d.y + d.dy/2) + ")";
-            })
-            .attr("dy", "0.2em")
-            .text(function(d,i){
-                return d.name;
-            })
-            .style("font-size", function(d, i){
-                return (d.dx + d.dy) / 30 + "px";
-            })
-}

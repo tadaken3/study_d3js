@@ -3,7 +3,7 @@
 import pandas as pd
 import json
 
-df = pd.read_csv('data_.csv')
+df = pd.read_csv('data.csv')
 category_list = df['category'].drop_duplicates()
 
 list = []
@@ -17,5 +17,5 @@ for category in category_list:
     list.append(category_dict)
 dict = {'name' : 'root', 'children': list}
 
-f = open("data_.json", "w")    
+f = open("data.json", "w")    
 json.dump(dict, f, ensure_ascii=False)
